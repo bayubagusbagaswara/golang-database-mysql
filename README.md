@@ -45,3 +45,17 @@
 - Sedangkan untuk dataSourceName, tiap database biasanya punya cara penulisan masing-masing. Misalnya di MySQL, kita bisa menggunakan dataSourceName seperti dibawah ini:
   - `username:password@tcp(host:port)/database_name`
 - Jika `object sql.DB` sudah tidak digunakan lagi, disarankan untuk menutupnya menggunakan function `Close()`
+
+## Database Pooling
+
+- Object `sql.DB` di Golang sebenarnya bukanlah sebuah koneksi ke database
+- Melainkan `sebuah pool` ke database, atau dikenal dengan konsep `Database Pooling`
+- Di dalam sql.DB, Golang melakukan management koneksi ke database secara otomatis. Hal ini menjadikan kita tidak perlu melakukan management koneksi database secara manual
+- Jadi database pooling ini adalah `kumpulan dari object koneksi`
+- Dengan kemampuan database pooling ini, kita bisa menentukan `jumlah minimal dan maksimal koneksi` yang dibuat oleh Golang, sehingga tidak membanjiri koneksi ke database, karena biasanya ada batas maksimal koneksi yang bisa ditangani oleh database yang kita gunakan
+
+## Pengaturan Database Pooling
+
+- Pengaturan database pooling
+
+  ![Pengaturan_Database_Pooling](img/pengaturan-database-pooling.jpg)
