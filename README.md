@@ -36,3 +36,12 @@
 - Tanpa driver database, maka package database di Go-Lang tidak mengerti apapun, karena hanya berisi kontrak interface saja
 - Menambahkan module database mysql dengan perintah `go get -u github.com/go-sql-driver/mysql`
 - harus include dulu driver dari mysql nya di import file go nya, seperti ini `"github.com/go-sql-driver/mysql"`
+
+## Membuat Koneksi ke Database
+
+- Hal pertama yang akan kita lakukan ketika aplikasi yang menggunakan database adalah melakukan koneksi ke databasenya
+- Untuk melakukan koneksi ke database di Golang, kita bisa membuat object `sql.DB` menggunakan function `sql.Open(driver, dataSourceName)`
+- Untuk menggunakan database MySQL, kita bisa menggunakan driver `"mysql"`
+- Sedangkan untuk dataSourceName, tiap database biasanya punya cara penulisan masing-masing. Misalnya di MySQL, kita bisa menggunakan dataSourceName seperti dibawah ini:
+  - `username:password@tcp(host:port)/database_name`
+- Jika `object sql.DB` sudah tidak digunakan lagi, disarankan untuk menutupnya menggunakan function `Close()`
