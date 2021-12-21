@@ -103,12 +103,11 @@
       "previewLimit": 50,
       "server": "localhost",
       "port": 3306,
-      "driver": "MariaDB",
-      "name": "belajar-mysql",
-      "group": "BelajarMySQLGroup",
-      "database": "belajar_mysql",
-      "username": "root",
-      "password": ""
+      "askForPassword": true,
+      "driver": "MySQL",
+      "name": "GolangDB",
+      "database": "golang_database",
+      "username": "root"
     }
   ]
 }

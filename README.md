@@ -59,3 +59,9 @@
 - Pengaturan database pooling
 
   ![Pengaturan_Database_Pooling](img/pengaturan-database-pooling.jpg)
+
+## Eksekusi Perintah SQL
+
+- Saat membuat aplikasi menggunakan database, sudah pastik kita ingin berkomunikasi dengan database menggunakan perintah SQL
+- Di Golang juga menyediakan function yang bisa kita gunakan untuk mengirim perintah SQL ke database menggunakan function `(DB) ExecContext(context, sql, params)`
+- Ketika mengirim perintah SQL, kita butuh mengirimkan context, dan seperti yang sudah pernah kita pelajari di `Golang Context`. Dengan menggunakan context, kita bisa mengirimkan sinyal cancel, jika kita ingin membatalkan pengiriman perintah SQL nya
