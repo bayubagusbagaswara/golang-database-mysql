@@ -112,3 +112,8 @@
 - Oleh karena itu, khusus tipe kolom yang bisa NULL, kita perlu menggunakan tipe data yang ada dalam `package.sql`
 
   ![Tipe_Data_Nullable](img/tipe-data-nullable.jpg)
+
+## SQL Dengan Parameter
+
+- Saat membuat aplikasi, kita tidak mungkin akan melakukan hardcode perintah SQL di kode Golang kita
+- Biasanya kita akan menerima input data dari user, lalu membuat perintah SQL dari input user, dan mengirimnya menggunakan perintah SQL

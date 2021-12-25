@@ -120,5 +120,39 @@ func TestQuerySqlComplex(t *testing.T) {
 		fmt.Println("Married:", married)
 		fmt.Println("Created At:", createdAt)
 	}
+}
 
+// test sql injection
+func TestSqlInjection(t *testing.T) {
+	db := GetConnection()
+	defer db.Close()
+
+	ctx := context.Background()
+
+	// kita anggap username dan password adalah input dari user
+	// inputan tersebut kita masukkan kedalam script query nya
+	username := "admin"
+	password := "admin"
+
+	script := "SELECT username FROM user WHERE username= '" + username + "' AND password= '" + password + "' LIMIT 1"
+
+	rows, err := db.QueryContext(ctx, script)
+
+	if err != nil {
+		panic(err)
+	}
+	defer rows.Close()
+
+	// kalau misalnya Next() berhasil, maka ada datanya di rows
+	if rows.Next() {
+		var username string
+		err := rows.Scan(&username)
+		if err != nil {
+			panic(err)
+		}
+		fmt.Println("Sukses login", username)
+	} else {
+		// jika gagal
+		fmt.Println("Gagal login")
+	}
 }
