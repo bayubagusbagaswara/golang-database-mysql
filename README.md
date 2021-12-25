@@ -78,3 +78,24 @@
 - Kita bisa menggunakan function `(Rows) Next() (boolean)` untuk melakukan iterasi terhadap data hasil query. Jika return data false, artinya sudah tidak ada data lagi didalam result
 - Untuk membaca tiap data, kita bisa menggunakan `(Rows) Scan(columns...)`
 - Dan jangan lupa, setelah menggunakan Rows, jangan lupa untuk menutupnya menggunakan `(Rows) Close()`
+
+## Tipe Data Column
+
+- Sebelumnya kita hanya membuat table dengan tipe data di kolom nya berupa VARCHAR
+- Untuk VARCHAR di database, biasanya kita gunakan String di Golang
+- Bagaimana dengan tipe data yang lain?
+- Ada representasinya di Golang, misal tipe data timestamp, date dan lain-lain
+
+## Mapping Tipe Data
+
+- Berikut mapping tipe data dari Golang ke Database
+
+  ![Mapping_Tipe_Data](img/mapping-tipe-data.jpg)
+
+## Error Tipe Data Date
+
+- Biasanya golang tidak bisa menerima balikan data dari database dengan tipe data Date
+  ![Error_Tipe_Data_Date](img/error-tipe-data-date.jpg)
+
+- Secara deafult, Driver MySQL untuk Golang akan melakukan query tipe data DATE, DATETIME, TIMESTAMP menjadi `[]byte atau []uint8`. Dimana ini bisa dikonversi menjadi `String`, lalu di parsing menjadi `time.Time`
+- Namun, hal ini merepotkan jika dilakukan manual, kita bisa meminta Driver MySQL untuk Golang secara otomatis melakukan parsing dengan menambahkan parameter `parseTime=true`

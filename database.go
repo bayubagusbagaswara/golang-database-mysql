@@ -8,7 +8,7 @@ import (
 // balikan dari function adalah pointer *sql.DB
 func GetConnection() *sql.DB {
 
-	db, err := sql.Open("mysql", "root:root@tcp(localhost:3306)/golang_database")
+	db, err := sql.Open("mysql", "root:root@tcp(localhost:3306)/golang_database?parseTime=true")
 	if err != nil {
 		panic((err))
 	}
