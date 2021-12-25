@@ -65,3 +65,8 @@
 - Saat membuat aplikasi menggunakan database, sudah pastik kita ingin berkomunikasi dengan database menggunakan perintah SQL
 - Di Golang juga menyediakan function yang bisa kita gunakan untuk mengirim perintah SQL ke database menggunakan function `(DB) ExecContext(context, sql, params)`
 - Ketika mengirim perintah SQL, kita butuh mengirimkan context, dan seperti yang sudah pernah kita pelajari di `Golang Context`. Dengan menggunakan context, kita bisa mengirimkan sinyal cancel, jika kita ingin membatalkan pengiriman perintah SQL nya
+
+## Query SQL
+
+- Untuk operasi SQL yang tidak membutuhkan hasil, kita bisa menggnakan perintah Exec. Namun jika kita membutuhkan `result`, seperti `SELECT SQL`, kita bisa menggunakan function yang berbeda
+- Function untuk melakukan query ke database, bisa menggunakan function `(DB) QueryContext(context, sql, params)`
