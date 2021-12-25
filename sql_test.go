@@ -156,3 +156,36 @@ func TestSqlInjection(t *testing.T) {
 		fmt.Println("Gagal login")
 	}
 }
+
+// problem SQL Injection
+func TestProblemSqlInjection(t *testing.T) {
+	db := GetConnection()
+	defer db.Close()
+	ctx := context.Background()
+
+	// misal kita tambahkan karakter bebas di parameter untuk username
+	// dan juga kita masukkan password yang salah (tidak sesuai)
+	// karena SQL Injection itu akan mengubah struktur querynya
+	username := "admin';#"
+	password := "salah"
+
+	script := "SELECT username FROM user WHERE username= '" + username + "' AND password= '" + password + "' LIMIT 1"
+
+	rows, err := db.QueryContext(ctx, script)
+
+	if err != nil {
+		panic(err)
+	}
+	defer rows.Close()
+
+	if rows.Next() {
+		var username string
+		err := rows.Scan(&username)
+		if err != nil {
+			panic(err)
+		}
+		fmt.Println("Sukses login", username)
+	} else {
+		fmt.Println("Gagal login")
+	}
+}
