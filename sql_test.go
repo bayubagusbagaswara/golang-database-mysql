@@ -27,6 +27,7 @@ func TestExecSql(t *testing.T) {
 }
 
 // test untuk query sql yang memiliki result (mengembalikan data hasil query)
+
 func TestQuerySql(t *testing.T) {
 	db := GetConnection()
 	defer db.Close()
@@ -42,4 +43,35 @@ func TestQuerySql(t *testing.T) {
 	}
 	// rows harus di close
 	defer rows.Close()
+}
+
+// setelah kita mendapatkan result hasil query, nah selanjutnya adalah kita dapatkan datanya per record, dengan cara iterasi Rows nya
+func TestQuerySqlRows(t *testing.T) {
+	db := GetConnection()
+	defer db.Close()
+
+	ctx := context.Background()
+
+	query := "SELECT id, name FROM customer"
+	rows, err := db.QueryContext(ctx, query)
+	if err != nil {
+		panic(err)
+	}
+	defer rows.Close()
+
+	// bikin perulangan
+	// selama next() nya bernilai true, kita akan lakukan iterasi tiap datanya
+	// caranya dengan menggunakan Scan, dan masukkan semua parameternya (sesuai dengan colomn saat query misal id dan name)
+
+	for rows.Next() {
+		var id, name string
+		// pointer agar bisa menangkap hasil datanya, balikannya adalah error
+		err = rows.Scan(&id, &name)
+		if err != nil {
+			panic(err)
+		}
+		// cetak id dan namenya
+		fmt.Println("Id:", id)
+		fmt.Println("Name:", name)
+	}
 }
