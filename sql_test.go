@@ -2,6 +2,7 @@ package golangdatabasemysql
 
 import (
 	"context"
+	"database/sql"
 	"fmt"
 	"testing"
 	"time"
@@ -92,10 +93,13 @@ func TestQuerySqlComplex(t *testing.T) {
 
 	// iterasi data result
 	for rows.Next() {
-		var id, name, email string
+		var id, name string
+		// karena email bisa null, pake NullString
+		var email sql.NullString
 		var balance int32
 		var rating float64
-		var birthDate, createdAt time.Time
+		var birthDate sql.NullTime
+		var createdAt time.Time
 		var married bool
 		// urutan recordnya harus sesuai urutan parameter (kolom) di script Query nya
 		err = rows.Scan(&id, &name, &email, &balance, &rating, &birthDate, &married, &createdAt)
@@ -105,10 +109,14 @@ func TestQuerySqlComplex(t *testing.T) {
 		fmt.Println("=====================")
 		fmt.Println("Id:", id)
 		fmt.Println("Name:", name)
-		fmt.Println("Email:", email)
+		if email.Valid {
+			fmt.Println("Email:", email.String)
+		}
 		fmt.Println("Balance:", balance)
 		fmt.Println("Rating:", rating)
-		fmt.Println("Birth Date:", birthDate)
+		if birthDate.Valid {
+			fmt.Println("Birth Date:", birthDate.Time)
+		}
 		fmt.Println("Married:", married)
 		fmt.Println("Created At:", createdAt)
 	}

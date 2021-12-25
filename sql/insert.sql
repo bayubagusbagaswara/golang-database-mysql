@@ -34,3 +34,21 @@ values (
         '1997-06-22',
         true
     );
+insert into customer(
+        id,
+        name,
+        email,
+        balance,
+        rating,
+        birth_date,
+        married
+    )
+values (
+        'joko',
+        'Joko',
+        NULL,
+        3300000,
+        5.0,
+        NULL,
+        true
+    );

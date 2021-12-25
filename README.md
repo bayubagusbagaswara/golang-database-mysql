@@ -95,7 +95,20 @@
 ## Error Tipe Data Date
 
 - Biasanya golang tidak bisa menerima balikan data dari database dengan tipe data Date
+
   ![Error_Tipe_Data_Date](img/error-tipe-data-date.jpg)
 
 - Secara deafult, Driver MySQL untuk Golang akan melakukan query tipe data DATE, DATETIME, TIMESTAMP menjadi `[]byte atau []uint8`. Dimana ini bisa dikonversi menjadi `String`, lalu di parsing menjadi `time.Time`
 - Namun, hal ini merepotkan jika dilakukan manual, kita bisa meminta Driver MySQL untuk Golang secara otomatis melakukan parsing dengan menambahkan parameter `parseTime=true`
+
+## Nullable Type
+
+- Golang database tidak mengerti dengan tipe data NULL di database
+- Oleh karena itu, khusus untuk kolom yang bisa NULL di database, akan jadi masalah jika kita melakukan Scan secara bulat-bulat menggunakan tipe data representasinya di Golang
+
+## Error Data Null
+
+- Konversi secara otomatis data NULL tidak didukung oleh Driver MySQL Golang
+- Oleh karena itu, khusus tipe kolom yang bisa NULL, kita perlu menggunakan tipe data yang ada dalam `package.sql`
+
+  ![Tipe_Data_Nullable](img/tipe-data-nullable.jpg)
