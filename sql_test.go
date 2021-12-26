@@ -189,3 +189,53 @@ func TestProblemSqlInjection(t *testing.T) {
 		fmt.Println("Gagal login")
 	}
 }
+
+func TestProblemSqlInjectionSafe(t *testing.T) {
+	db := GetConnection()
+	defer db.Close()
+	ctx := context.Background()
+
+	username := "admin"
+	password := "admin"
+
+	script := "SELECT username FROM user WHERE username= ? AND password= ? LIMIT 1"
+
+	// parameter ketiga, masukkan parameter untuk ? di script query, ingat harus urut letak parameternya
+	rows, err := db.QueryContext(ctx, script, username, password)
+
+	if err != nil {
+		panic(err)
+	}
+	defer rows.Close()
+
+	if rows.Next() {
+		var username string
+		err := rows.Scan(&username)
+		if err != nil {
+			panic(err)
+		}
+		fmt.Println("Sukses login", username)
+	} else {
+		fmt.Println("Gagal login")
+	}
+}
+
+// test ExecConstext dengan SQL Injection safe
+func TestExecSqlParameter(t *testing.T) {
+	db := GetConnection()
+	defer db.Close()
+	ctx := context.Background()
+
+	username := "aan"
+	password := "Aan"
+	// parameternya kita set dengan tanda tanya
+	query := "INSERT INTO user(username, password) VALUES(?, ?)"
+
+	// di execContext kita masukkan parameter username dan password nya, agar dimasukkan ke dalam script querynya
+	_, err := db.ExecContext(ctx, query, username, password)
+
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println("Success insert new user")
+}

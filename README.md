@@ -123,3 +123,18 @@
 - SQL Injection adalah sebuah teknik yang menyalahgunakan sebuah celah keamanan yang terjadi dalam lapisan basis data sebuah aplikasi
 - Biasanya SQL Injection dilakukan dengan mengirim input dari user dengan perintah yang salah, sehingga menyebabkan hasil SQL yang kita buat menjadi tidak valid
 - SQL Injection sangat berbahaya, jika sampai kita salah membuat SQL, bisa jadi data kita tidak aman. Misalnya bisa login tanpa username dan password nya
+
+## Solusinya?
+
+- Jangan membuat query SQL secara manual dengan menggabungkan String secara bulat-bulat
+- Jika kita membutuhkan parameter ketika membuat SQL, kita bisa menggunakan `function Execute atau Query dengan parameter`
+
+## SQL dengan Parameter
+
+- Sekarang kita sudah tahu bahayanya SQL Injection, jika menggabungkan string ketika membuat query
+- Jika ada kebutuhan seperti itu, sebenarnya function Exec dan Query memiliki parameter tambahan yang bisa kita gunakan untuk mensubtitusi parameter dari function tersebut ke SQL query yang kita buat
+- Untuk menandai sebuah SQL membutuhkan parameter, kita bisa gunakan karakter `? (tanda tanya)`
+- Contoh SQL:
+  - SELECT username FROM user WHERE username = ? AND password = ? LIMIT 1
+  - INSERT INTO user(username, password) VALUES (?,?)
+  - Dan lain-lain
