@@ -239,3 +239,28 @@ func TestExecSqlParameter(t *testing.T) {
 	}
 	fmt.Println("Success insert new user")
 }
+
+// test LastInsertId untuk mendapatkan ID terakhir dari auto_increment
+func TestAutoIncrement(t *testing.T) {
+	db := GetConnection()
+	defer db.Close()
+	ctx := context.Background()
+
+	email := "bayu@mail.com"
+	comment := "Test comment"
+	query := "INSERT INTO comments(email, comment) VALUES(?, ?)"
+
+	// balikan data dari ExecContext adalah result
+	// result sendiri memiliki function LastInsertId
+	result, err := db.ExecContext(ctx, query, email, comment)
+
+	if err != nil {
+		panic(err)
+	}
+	// cek id terakhir yang di auto_increment
+	insertId, err := result.LastInsertId()
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println("Success insert new comment with id", insertId)
+}
