@@ -302,3 +302,42 @@ func TestPrepareStatement(t *testing.T) {
 		fmt.Println("Comment id", id)
 	}
 }
+
+func TestTransaction(t *testing.T) {
+	db := GetConnection()
+	defer db.Close()
+	ctx := context.Background()
+
+	// mulai transaksi, balikannya adalah object Tx dan error
+	tx, err := db.Begin()
+	if err != nil {
+		panic(err)
+	}
+
+	script := "INSERT INTO comments (email, comment) VALUES(?, ?)"
+
+	// do transaction
+	for i := 0; i < 10; i++ {
+		email := "bayu" + strconv.Itoa(i) + "@mail.com"
+		comment := "Komentar ke " + strconv.Itoa(i)
+
+		// kita pakai tx untuk ExecContext
+		result, err := tx.ExecContext(ctx, script, email, comment)
+		if err != nil {
+			panic(err)
+		}
+		id, err := result.LastInsertId()
+		if err != nil {
+			panic(err)
+		}
+		fmt.Println("Comment id", id)
+	}
+
+	// setelah selesai transaksi, lakukan commit
+	err = tx.Commit()
+	// misal di rollback, maka semua proses transaksi akan dibatalkan
+	// err = tx.Rollback()
+	if err != nil {
+		panic(err)
+	}
+}
