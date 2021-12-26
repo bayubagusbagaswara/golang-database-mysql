@@ -4,6 +4,7 @@ import (
 	"context"
 	"database/sql"
 	"fmt"
+	"strconv"
 	"testing"
 	"time"
 )
@@ -263,4 +264,41 @@ func TestAutoIncrement(t *testing.T) {
 		panic(err)
 	}
 	fmt.Println("Success insert new comment with id", insertId)
+}
+
+// test Prepare Statement
+func TestPrepareStatement(t *testing.T) {
+	db := GetConnection()
+	defer db.Close()
+	ctx := context.Background()
+
+	script := "INSERT INTO comments (email, comment) VALUES(?, ?)"
+	// buat prepare statement menggunakan PrepareContext,
+	// balikannya adalah statementnya dan error
+	statement, err := db.PrepareContext(ctx, script)
+
+	if err != nil {
+		panic(err)
+	}
+	// setelah selesai menggunakan statementnya, maka harus di close
+	defer statement.Close()
+
+	// perulangan untuk mengeksekusi prepare statementnya
+	for i := 0; i < 10; i++ {
+		email := "bayu" + strconv.Itoa(i) + "@mail.com"
+		comment := "Komentar ke " + strconv.Itoa(i)
+
+		// eksekusi menggunakan ExecContext, pakenya statement bukan db lagi
+		// di ExecContext kita tidak perlu lagi membuat query, karena sudah dibuat diawal saat prepare statement
+		result, err := statement.ExecContext(ctx, email, comment)
+		if err != nil {
+			panic(err)
+		}
+		// dapatkan id terakhir juga
+		id, err := result.LastInsertId()
+		if err != nil {
+			panic(err)
+		}
+		fmt.Println("Comment id", id)
+	}
 }

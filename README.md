@@ -147,3 +147,21 @@
 - Tapi untungnya di Golang ada cara yang lebih mudah
 - Kita bisa menggunakan function `(Result) LastInsertId()` untuk mendapatkan Id terakhir yang dibuat secara auto increment
 - Result adalah object yang dikembalikan ketika kita menggunakan function Exec
+
+## Query atau Exec dengan Parameter
+
+- Saat kita menggunakan Fuction Query atau Exec yang menggunakan parameter, sebenarnya implementasi dibawahnya ada fitur `Prepare Statement`
+- Jadi tahapan pertama adalah statement nya disiapkan terlebih dahulu, kemudian
+  baru diisi (statementnya) dengan parameternya
+- Kadang ada kasus kita ingin melakukan beberapa hal yang sama sekaligus, tetapi hanya berbeda di parameternya. Misal insert data yang banyak secara langsung
+- Pembuatan Prepare Statement bisa dilakukan dengan manual, tanpa harus menggunakan Query atau Exec dengan parameter
+
+## Prepare Statement
+
+- Saat kita membuat Prepare Statement, secara otomatis akan mengenali koneksi database yang digunakan
+- Sehingga ketika kita mengeksekusi Prepare Statement berkali-kali, maka akan menggunakan koneksi yang sama. Hal tersebut bisa lebih efisien, karena pembuatan prepare statement nya hanya sekali diawal saja
+- Jika menggunakan Query dan Exec dengan parameter, maka kita tidak bisa menjamin bahwa koneksi yang digunakan akan sama. Oleh karena itu, bisa jadi prepare statement akan selalu dibuat berkali-kali walaupun kita menggunakan SQL yang sama
+- Untuk membuat Prepare Statement, kita bisa menggunakan function `(DB) PrepareContext(context, sql)`
+- Prepare Statement direpresentasikan dalam struct `database/sql.Stmt`
+- Sama seperti resource sql lainnya, Stmt harus di Close() jika sudah tidak digunakan lagi
+- Prepare Statement bisa digunakan untuk eksekusi ataupun query
